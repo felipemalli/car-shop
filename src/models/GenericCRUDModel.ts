@@ -1,7 +1,7 @@
 import { Model as MongooseModel } from 'mongoose';
 import IGenericCRUDModel from '../interfaces/IGenericCRUDModel';
 
-abstract class GenericCRUDMongoModel<T> implements IGenericCRUDModel<T> {
+abstract class GenericCRUDModel<T> implements IGenericCRUDModel<T> {
   constructor(protected mongooseModel: MongooseModel<T>) {}
 
   public async create(data: T): Promise<T> {
@@ -25,4 +25,4 @@ abstract class GenericCRUDMongoModel<T> implements IGenericCRUDModel<T> {
   }
 }
 
-export default GenericCRUDMongoModel;
+export default GenericCRUDModel;

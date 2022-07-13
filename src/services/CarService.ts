@@ -1,68 +1,46 @@
-// import { isValidObjectId } from 'mongoose';
-// import { Car, CarZodSchema } from '../interfaces/CarInterface';
-// import { Model } from '../interfaces/ModelInterface';
-// import { Service } from '../interfaces/ServiceInterface';
-// import { BadRequestError, NotFoundError } from '../utils/errors';
-// import CarModel from '../models/CarModel';
-// import Messages from '../utils/Messages';
+import { Car, CarZodSchema } from '../interfaces/CarInterface';
+import CarModel from '../models/CarModel';
+import GenericCRUDModel from '../models/GenericCRUDModel';
+import { BadRequestError, NotFoundError } from '../utils/errors';
+import Messages from '../utils/Messages';
+import GenericCRUDService from './GenericCRUDService';
 
-// export const carModel = new CarModel();
+class CarService extends GenericCRUDService<Car> {
+  constructor(protected model: GenericCRUDModel<Car> = new CarModel()) {
+    super(model);
+  }
 
-// class CarService implements Service<Car> {
-//   constructor(protected model: IGenericCRUDService<T>) { }
+  async create(car: Car): Promise<Car | null> {
+    const parsed = CarZodSchema.safeParse(car);
 
-//   private checkValidId = (id: string) => {
-//     if (!isValidObjectId(id)) {
-//       throw new BadRequestError(Messages.ID_HEXADECIMAL);
-//     }
-//   };
+    if (!parsed.success) {
+      throw new BadRequestError(String(parsed.error));
+    }
 
-//   public read = async () => this.model.read();
+    return this.model.create(car);
+  }
+    
+  async update(id: string, car: Car): Promise<Car | null> {
+    const parsed = CarZodSchema.safeParse(car);
+    
+    if (!parsed.success) {
+      throw new BadRequestError(String(parsed.error));
+    }
 
-//   public create = async (data: Car) => {
-//     const parsed = CarZodSchema.safeParse(data);
-//     if (!parsed.success) {
-//       throw new BadRequestError(Messages.INVALID_FIELDS);
-//     }
+    return this.model.update(id, car);
+  }
 
-//     return this.model.create(data);
-//   };
+  public async delete(id: string): Promise<void> {
+    const HEXADECIMAL_LENGTH = 24;
+    if (id.length < HEXADECIMAL_LENGTH) {
+      throw new BadRequestError(Messages.HEXADECIMAL_ID);
+    }
+    
+    const car = await this.readOne(id);
+    if (!car) throw new NotFoundError();
 
-//   public readOne = async (id: string) => {
-//     this.checkValidId(id);
+    this.model.delete(id);
+  }
+}
 
-//     const car = await this.model.readOne(id);
-//     if (!car) {
-//       throw new NotFoundError(Messages.OBJECT_NOT_FOUND);
-//     }
-
-//     return car;
-//   };
-
-//   public update = async (id: string, data: Car) => {
-//     this.checkValidId(id);
-
-//     const parsed = CarZodSchema.safeParse(data);
-//     if (!parsed.success) {
-//       throw new BadRequestError(Messages.INVALID_FIELDS);
-//     }
-
-//     const car = await this.model.update(id, data);
-//     if (!car) {
-//       throw new NotFoundError(Messages.OBJECT_NOT_FOUND);
-//     }
-
-//     return car;
-//   };
-
-//   public delete = async (id: string) => {
-//     this.checkValidId(id);
-
-//     const car = await this.model.delete(id);
-//     if (!car) {
-//       throw new NotFoundError(Messages.OBJECT_NOT_FOUND);
-//     }
-//   };
-// }
-
-// export default CarService;
+export default CarService;

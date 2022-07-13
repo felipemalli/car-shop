@@ -1,5 +1,6 @@
 import { Car } from '../interfaces/CarInterface';
 import CarService from '../services/CarService';
+import GenericCRUDService from '../services/GenericCRUDService';
 import GenericCRUDController from './GenericCRUDController';
 
 export default class CarController extends GenericCRUDController<Car> {
@@ -8,7 +9,7 @@ export default class CarController extends GenericCRUDController<Car> {
   private $idRoute: string;
 
   constructor(
-    service = CarService,
+    service: GenericCRUDService<Car> = new CarService(),
     route = '/cars',
   ) {
     super(service);
