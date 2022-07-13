@@ -10,6 +10,8 @@ import StatusCodes from '../utils/StatusCodes';
 abstract class GenericCRUDController<T> implements IGenericCRUDController<T> {
   constructor(protected service: IGenericCRUDService<T>) { }
 
+  public abstract route: string;
+
   public async create(
     req: RequestWithBody<T>,
     res: Response<T>,
@@ -17,7 +19,7 @@ abstract class GenericCRUDController<T> implements IGenericCRUDController<T> {
   ): Promise<typeof res | void> {
     try {
       const createdObject = await this.service.create(req.body);
-      return res.status(StatusCodes.CREATED).json(createdObject);
+      return res.status(StatusCodes.CREATED).json(createdObject || undefined);
     } catch (error) {
       next(error);
     }
@@ -43,7 +45,8 @@ abstract class GenericCRUDController<T> implements IGenericCRUDController<T> {
   ): Promise<typeof res | void> {
     try {
       const foundedObject = await this.service.readOne(req.params.id);
-      return res.status(StatusCodes.OK).json(foundedObject);
+
+      return res.status(StatusCodes.OK).json(foundedObject || undefined);
     } catch (error) {
       next(error);
     }
@@ -56,7 +59,7 @@ abstract class GenericCRUDController<T> implements IGenericCRUDController<T> {
   ): Promise<typeof res | void> {
     try {
       const updatedObject = await this.service.update(req.params.id, req.body);
-      return res.status(StatusCodes.OK).json(updatedObject);
+      return res.status(StatusCodes.OK).json(updatedObject || undefined);
     } catch (error) {
       next(error);
     }

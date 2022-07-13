@@ -32,6 +32,7 @@ class CarService extends GenericCRUDService<Car> {
 
   public async delete(id: string): Promise<void> {
     const HEXADECIMAL_LENGTH = 24;
+  
     if (id.length < HEXADECIMAL_LENGTH) {
       throw new BadRequestError(Messages.HEXADECIMAL_ID);
     }

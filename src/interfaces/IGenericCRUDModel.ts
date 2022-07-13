@@ -1,5 +1,5 @@
 export default interface IGenericModel<T> {
-  create(entity: T): Promise<T>;
+  create(entity: T): Promise<T | null>;
 
   read(): Promise<T[]>;
   
@@ -7,5 +7,5 @@ export default interface IGenericModel<T> {
 
   update(id: string, entity: T): Promise<T | null>;
 
-  delete(id: string): Promise<T | null | void>;
+  delete(id: string): Promise<T | null>;
 }

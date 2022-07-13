@@ -4,7 +4,7 @@ import IGenericCRUDModel from '../interfaces/IGenericCRUDModel';
 abstract class GenericCRUDModel<T> implements IGenericCRUDModel<T> {
   constructor(protected mongooseModel: MongooseModel<T>) {}
 
-  public async create(data: T): Promise<T> {
+  public async create(data: T): Promise<T | null> {
     return this.mongooseModel.create(data);
   }
 

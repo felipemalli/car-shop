@@ -15,7 +15,11 @@ abstract class GenericCRUDService<T> implements IGenericCRUDService<T> {
 
   public async readOne(id: string): Promise<T | null> {
     const object = this.model.readOne(id);
-    if (!object) throw new NotFoundError();
+    if (!object) {
+      throw new NotFoundError();
+    } 
+
+    if (object === null || object === undefined) throw new NotFoundError();
 
     return object;
   }
