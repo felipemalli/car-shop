@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import IGenericCRUDController from '../interfaces/IGenericCRUDController';
 import IGenericCRUDService from '../interfaces/IGenericCRUDService';
-// eslint-disable-next-line max-len
-import { RequestWithBody, RequestWithBodyAndParam } from '../interfaces/IGenericRequests';
+import {
+  RequestWithBody,
+  RequestWithBodyAndParam,
+} from '../interfaces/IGenericRequests';
 import StatusCodes from '../utils/StatusCodes';
 
 abstract class GenericCRUDController<T> implements IGenericCRUDController<T> {
