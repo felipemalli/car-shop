@@ -10,7 +10,7 @@ abstract class GenericCRUDService<T> implements IGenericCRUDService<T> {
   public read = async (): Promise<T[]> => this.model.read();
 
   public readOne = async (id: string): Promise<T | null> => {
-    const object = this.model.readOne(id);
+    const object = await this.model.readOne(id);
     if (!object) {
       throw new NotFoundError();
     } 
@@ -19,7 +19,7 @@ abstract class GenericCRUDService<T> implements IGenericCRUDService<T> {
   };
 
   public update = async (id: string, payload: T): Promise<T | null> => {
-    const updatedObject = this.model.update(id, payload);
+    const updatedObject = await this.model.update(id, payload);
     if (!updatedObject) throw new NotFoundError();
 
     return updatedObject;
@@ -29,7 +29,7 @@ abstract class GenericCRUDService<T> implements IGenericCRUDService<T> {
     const object = await this.readOne(id);
     if (!object) throw new NotFoundError();
 
-    this.model.delete(id);
+    await this.model.delete(id);
   };
 }
 

@@ -21,7 +21,8 @@ class CarService extends GenericCRUDService<Car> {
   public readOne = async (id: string): Promise<Car | null> => {
     this.checkHexadecimal(id);
 
-    const object = this.model.readOne(id);
+    const object = await this.model.readOne(id);
+
     if (!object) {
       throw new NotFoundError();
     } 
@@ -57,7 +58,7 @@ class CarService extends GenericCRUDService<Car> {
     const car = await this.readOne(id);
     if (!car) throw new NotFoundError();
 
-    this.model.delete(id);
+    await this.model.delete(id);
   };
 }
 
