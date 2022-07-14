@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { Model } from 'mongoose';
 import { Car } from '../interfaces/CarInterface';
 import GenericCRUDModel from './GenericCRUDModel';

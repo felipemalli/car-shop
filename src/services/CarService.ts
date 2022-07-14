@@ -6,11 +6,30 @@ import Messages from '../utils/Messages';
 import GenericCRUDService from './GenericCRUDService';
 
 class CarService extends GenericCRUDService<Car> {
-  constructor(protected model: GenericCRUDModel<Car> = new CarModel()) {
+  constructor(model: GenericCRUDModel<Car> = new CarModel()) {
     super(model);
   }
 
-  async create(car: Car): Promise<Car | null> {
+  private checkHexadecimal = (id: string) => {
+    const HEXADECIMAL_LENGTH = 24;
+    
+    if (id.length < HEXADECIMAL_LENGTH) {
+      throw new BadRequestError(Messages.HEXADECIMAL_ID);
+    }
+  };
+
+  public readOne = async (id: string): Promise<Car | null> => {
+    this.checkHexadecimal(id);
+
+    const object = this.model.readOne(id);
+    if (!object) {
+      throw new NotFoundError();
+    } 
+
+    return object;
+  };
+
+  public create = async (car: Car): Promise<Car | null> => {
     const parsed = CarZodSchema.safeParse(car);
 
     if (!parsed.success) {
@@ -18,9 +37,11 @@ class CarService extends GenericCRUDService<Car> {
     }
 
     return this.model.create(car);
-  }
+  };
     
-  async update(id: string, car: Car): Promise<Car | null> {
+  public update = async (id: string, car: Car): Promise<Car | null> => {
+    this.checkHexadecimal(id);
+
     const parsed = CarZodSchema.safeParse(car);
     
     if (!parsed.success) {
@@ -28,20 +49,16 @@ class CarService extends GenericCRUDService<Car> {
     }
 
     return this.model.update(id, car);
-  }
+  };
 
-  public async delete(id: string): Promise<void> {
-    const HEXADECIMAL_LENGTH = 24;
-  
-    if (id.length < HEXADECIMAL_LENGTH) {
-      throw new BadRequestError(Messages.HEXADECIMAL_ID);
-    }
-    
+  public delete = async (id: string): Promise<void> => {
+    this.checkHexadecimal(id);
+
     const car = await this.readOne(id);
     if (!car) throw new NotFoundError();
 
     this.model.delete(id);
-  }
+  };
 }
 
 export default CarService;
