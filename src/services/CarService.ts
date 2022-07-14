@@ -41,7 +41,7 @@ class CarService extends GenericCRUDService<Car> {
   };
     
   public update = async (id: string, car: Car): Promise<Car | null> => {
-    this.checkHexadecimal(id);
+    await this.readOne(id);
 
     const parsed = CarZodSchema.safeParse(car);
     
