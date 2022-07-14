@@ -7,5 +7,5 @@ export interface Model<T> {
 
   update(id: string, entity: T): Promise<T | null>;
 
-  delete(id: string): Promise<void>;
+  delete(id: string): Promise<T | null>;
 }
