@@ -13,4 +13,6 @@ carRouter.addRoute(carController);
 
 server.addRouter(carRouter.router);
 
+server.handleError();
+
 export default server;
