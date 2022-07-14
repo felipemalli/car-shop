@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import { Model } from 'mongoose';
 import sinon, { SinonStub } from 'sinon';
 import CarModel from '../../../models/CarModel';
-import { carsMock } from '../../mocks/CarMock';
+import { carMock } from '../../mocks/CarMock';
 
 describe('Test car model', () => {
   describe('Test create car in model', () => {
     before(() => {
-      sinon.stub(Model, 'create').resolves(carsMock[0])
+      sinon.stub(Model, 'create').resolves(carMock)
     });
 
     after(() => {
@@ -16,8 +16,8 @@ describe('Test car model', () => {
 
     it('Success create car', async () => {
       const carModel = new CarModel();
-      const createdCar = await carModel.create(carsMock[0]);
-      expect(createdCar).to.be.equal(carsMock[0]);
+      const createdCar = await carModel.create(carMock);
+      expect(createdCar).to.be.equal(carMock);
     });
   });
 });
