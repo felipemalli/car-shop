@@ -1,6 +1,6 @@
 # Car Shop
 
-API with simples CRUD for handling cars. I follow the concepts of SOLID, OOP and using generics for reuse. <br>
+API with a simple CRUD for handling cars. I follow the concepts of SOLID, OOP and using generics for reuse. <br>
 
 <br>
 
